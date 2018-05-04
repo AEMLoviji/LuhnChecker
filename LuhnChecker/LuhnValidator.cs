@@ -1,13 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace LuhnChecker
 {
     /// <summary>
 	/// This class provide static method for validation entered card number based on Luhn formula.
 	/// </summary>
-    public static class LuhnChecker
+    public static class LuhnValidator
     {
 
         /// <summary>
