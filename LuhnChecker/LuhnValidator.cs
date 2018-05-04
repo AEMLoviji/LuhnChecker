@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace LuhnChecker
 {
@@ -12,7 +14,7 @@ namespace LuhnChecker
         /// Validates if credit card number is valid by checking it with Luhn function
         /// </summary>
         /// <param name="cardNumber">The card number in string to be validated</param>
-        /// <returns>True if pass the Luhn validation, otherwise false</returns>        
+        /// <returns>True if pass the Luhn validation, otherwise false</returns>  
         public static bool IsValid(string cardNumber)
         {
             cardNumber = cardNumber.Replace(" ", string.Empty);
@@ -23,27 +25,20 @@ namespace LuhnChecker
             }
 
             var sum = 0;
-            for (var i = cardNumber.Length - 1; i >= 0; i--)
+            var isOdd = false;
+            var digits = cardNumber.ToCharArray();
+            for (int i = digits.Length - 1; i >= 0; i--)
             {
-                var digit = int.Parse(cardNumber[i].ToString());
-
-                // For even numbers add the digit as is.
-                if ((i % 2) == 0)
+                var curDigit = (int)char.GetNumericValue(digits[i]);
+                if (isOdd)
                 {
-                    sum += digit;
+                    curDigit *= 2;
+                    if (curDigit > 9)
+                        curDigit -= 9;
                 }
-                else
-                {
-                    // For odd digits, multiply by 2 and if that
-                    // digit is greater than 5, subtract 9
-                    sum += (2 * digit);
-                    if (digit >= 5)
-                    {
-                        sum -= 9;
-                    }
-                }
+                sum += curDigit;
+                isOdd = !isOdd;
             }
-
             return sum % 10 == 0;
         }
 
